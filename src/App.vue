@@ -17,6 +17,7 @@ const vehiclePoints = ref([]);
 
 const zoom = ref(17);
 
+
 /*
 watch(zoom, (newZoom) => {
   console.log("zoom:", newZoom);
