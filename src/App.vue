@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer, LCircle } from "@vue-leaflet/vue-leaflet";
 //import data from "../../../sumo-simulator/sumo-exercises/samsun-sinopYolu_Demo2/data-default";
 import data from "../data";
+import SideBar from "./components/SideBar.vue";
 
 //reactive
 //const latLong = ref([41.36, 36.21]);
@@ -16,7 +17,6 @@ const qtyVehiclePoints = ref(0);
 const vehiclePoints = ref([]);
 
 const zoom = ref(17);
-
 
 /*
 watch(zoom, (newZoom) => {
@@ -98,7 +98,9 @@ function getDataByTime() {
 
 <template>
   <div class="body-container">
-    <div class="side-bar-container"></div>
+    <div class="side-bar-container">
+      <SideBar></SideBar>
+    </div>
     <div class="main-body-container">
       <div class="map-container">
         <l-map ref="map" v-model:zoom="zoom" :center="[41.37835, 36.21848]">
@@ -137,8 +139,8 @@ function getDataByTime() {
 }
 
 .side-bar-container {
-  width: 400px;
-  border-right: 2px solid aqua;
+  width: 500px;
+  border-right: 2px solid gray;
 }
 
 .map-container {
