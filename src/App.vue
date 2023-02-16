@@ -4,7 +4,8 @@ import "leaflet/dist/leaflet.css";
 
 //component import
 import { LMap, LTileLayer, LCircle } from "@vue-leaflet/vue-leaflet";
-import data from "../../../sumo-simulator/sumo-exercises/samsun-sinopYolu_Demo2/data-default";
+//import data from "../../../sumo-simulator/sumo-exercises/samsun-sinopYolu_Demo2/data-default";
+import data from "../data";
 
 //reactive
 //const latLong = ref([41.36, 36.21]);
@@ -14,21 +15,21 @@ const vehicleSpeed = ref("");
 const qtyVehiclePoints = ref(0);
 const vehiclePoints = ref([]);
 
-const zoom = ref(14);
+const zoom = ref(17);
 
 /*
 watch(zoom, (newZoom) => {
   console.log("zoom:", newZoom);
 }); */
 
-console.log(
+/* console.log(
   "data",
   data[0].time,
   " ... ",
   data[0].vehicles[0].vehicleID,
   "...",
   data[0].vehicles[0].coords
-);
+); */
 
 // log out the vehicles - for debug purposes
 /*
@@ -69,24 +70,24 @@ let index = 0;
 } */
 
 function getDataByTime() {
-  console.log("in getDataByTime func.");
-  console.log("index: ", index);
-  console.log(`time: ${data[index].time}`);
-  console.log(`vehicles length: ${data[index].vehicles.length}`);
+  //console.log("in getDataByTime func.");
+  //console.log("index: ", index);
+  //console.log(`time: ${data[index].time}`);
+  //console.log(`vehicles length: ${data[index].vehicles.length}`);
   qtyVehiclePoints.value = data[index].vehicles.length;
-  console.log("qtyVehiclePoints: ", qtyVehiclePoints.value);
+  //console.log("qtyVehiclePoints: ", qtyVehiclePoints.value);
   vehiclePoints.value = data[index].vehicles;
-  console.log("vehiclePoints: ", vehiclePoints.value);
+  //console.log("vehiclePoints: ", vehiclePoints.value);
   //console.log(`vehicles: ${data[index].vehicles}`);
   data[index].vehicles.forEach((vehicle) => {
-    console.log("vehicle", vehicle);
+    //console.log("vehicle", vehicle);
     latLong.value = vehicle.coords;
-    console.log("vehicleSpeed: ", vehicle.speed);
-    console.log("type vehicleSpeed: ", typeof vehicle.speed);
+    //console.log("vehicleSpeed: ", vehicle.speed);
+    //console.log("type vehicleSpeed: ", typeof vehicle.speed);
   });
   index++;
   if (index == data.length) {
-    console.log("index = data.length, stop timing");
+    //console.log("index = data.length, stop timing");
     clearTimeout(incrementTime);
   }
 }
@@ -99,7 +100,7 @@ function getDataByTime() {
     <div class="side-bar-container"></div>
     <div class="main-body-container">
       <div class="map-container">
-        <l-map ref="map" v-model:zoom="zoom" :center="[41.37829, 36.21762]">
+        <l-map ref="map" v-model:zoom="zoom" :center="[41.37835, 36.21848]">
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             layer-type="base"
