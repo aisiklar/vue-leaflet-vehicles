@@ -1,11 +1,13 @@
 <script setup>
-import { ref, watch, computed, onMounted } from "vue";
 import "leaflet/dist/leaflet.css";
+import { ref, watch, computed } from "vue";
 
 //component import
 import { LMap, LTileLayer, LCircle } from "@vue-leaflet/vue-leaflet";
 //import data from "../../../sumo-simulator/sumo-exercises/samsun-sinopYolu_Demo2/data-default";
-import data from "../data";
+import dataTraci from "./assets/data/dataTraci";
+import dataStatic from "./assets/data/dataStatic";
+import dataAdaptive from "./assets/data/dataAdaptive";
 import SideBar from "./components/SideBar.vue";
 
 //reactive
@@ -15,13 +17,12 @@ const circleRadius = ref(50);
 const vehicleSpeed = ref("");
 const qtyVehiclePoints = ref(0);
 const vehiclePoints = ref([]);
-
+const data = ref(dataTraci);
 const zoom = ref(17);
+const receivedSimType = ref("statik");
 
-/*
-watch(zoom, (newZoom) => {
-  console.log("zoom:", newZoom);
-}); */
+//logging
+console.log("receivedSimType: ", receivedSimType.value);
 
 /* console.log(
   "data",
@@ -45,6 +46,14 @@ for (let index = 0; index < 3; index++) {
   }
 } */
 
+watch(receivedSimType, (newReceivedSimType) => {
+  console.log("newReceivedSimType: ", newReceivedSimType);
+});
+
+watch(data, (newData) => {
+  console.log("sourceData: ", newData.value);
+});
+
 const newCircleRadius = computed(() => {
   console.log("zoom: ", parseInt(zoom.value, 10));
   return parseInt(zoom.value, 10) <= 11
@@ -54,11 +63,11 @@ const newCircleRadius = computed(() => {
     : 5;
 });
 
-console.log("data length: ", data.length);
+console.log("data length: ", data.value.length);
 
 // stop with :clearTimeout(incrementTime);
 
-const incrementTime = setInterval(getDataByTime, 1000);
+const incrementTime = setInterval(getDataByTime, 5000);
 
 let index = 0;
 /* function getDataByTime() {
@@ -73,25 +82,47 @@ let index = 0;
 function getDataByTime() {
   //console.log("in getDataByTime func.");
   //console.log("index: ", index);
-  //console.log(`time: ${data[index].time}`);
-  //console.log(`vehicles length: ${data[index].vehicles.length}`);
-  qtyVehiclePoints.value = data[index].vehicles.length;
+  console.log(`time: ${data.value[index].time}`);
+  console.log(`vehicles length: ${data.value[index].vehicles.length}`);
+  qtyVehiclePoints.value = data.value[index].vehicles.length;
   //console.log("qtyVehiclePoints: ", qtyVehiclePoints.value);
-  vehiclePoints.value = data[index].vehicles;
+  vehiclePoints.value = data.value[index].vehicles;
   //console.log("vehiclePoints: ", vehiclePoints.value);
   //console.log(`vehicles: ${data[index].vehicles}`);
-  data[index].vehicles.forEach((vehicle) => {
+  data.value[index].vehicles.forEach((vehicle) => {
     //console.log("vehicle", vehicle);
     latLong.value = vehicle.coords;
     //console.log("vehicleSpeed: ", vehicle.speed);
     //console.log("type vehicleSpeed: ", typeof vehicle.speed);
   });
   index++;
-  if (index == data.length) {
+  if (index == data.value.length) {
     //console.log("index = data.length, stop timing");
     clearTimeout(incrementTime);
   }
 }
+
+const receiveSimType = (input) => {
+  receivedSimType.value = input;
+  switch (receivedSimType.value) {
+    case "statik":
+      console.log("receivedSimType: ", receivedSimType.value);
+      data.value = dataStatic;
+      console.log("data: ", data.value);
+      break;
+    case "adaptif":
+      console.log("receivedSimType: ", receivedSimType.value);
+      data.value = dataAdaptive;
+      console.log("data: ", data.value);
+
+      break;
+    case "sensor":
+      console.log("receivedSimType: ", receivedSimType.value);
+      data.value = dataTraci;
+      console.log("data: ", data.value);
+      break;
+  }
+};
 
 // end of script
 </script>
@@ -99,7 +130,8 @@ function getDataByTime() {
 <template>
   <div class="body-container">
     <div class="side-bar-container">
-      <SideBar></SideBar>
+      <SideBar @selectedSimType="receiveSimType"></SideBar>
+      <div>simType written in parent: {{ receivedSimType }}</div>
     </div>
     <div class="main-body-container">
       <div class="map-container">

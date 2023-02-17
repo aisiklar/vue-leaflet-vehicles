@@ -1,7 +1,15 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const simType = ref("sensor");
+
+const emitSimType = defineEmits(["selectedSimType"]);
+
+emitSimType("selectedSimType", simType);
+
+watch(simType, (newSimType) => {
+  console.log("watching in SideBar. changed SimType, newSimType: ", newSimType);
+});
 
 const selectSimType = (event) => {
   console.log("button event:", event);
@@ -50,6 +58,9 @@ const selectSimType = (event) => {
           Sensörlü Kontrol
         </button>
       </div>
+    </div>
+    <div style="font-size: 1rem">
+      This is SideBar... Selected simType = {{ simType }}
     </div>
   </div>
 </template>
