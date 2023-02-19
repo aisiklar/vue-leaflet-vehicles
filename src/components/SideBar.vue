@@ -5,15 +5,14 @@ const simType = ref("sensor");
 
 const emitSimType = defineEmits(["selectedSimType"]);
 
-emitSimType("selectedSimType", simType);
-
 watch(simType, (newSimType) => {
-  console.log("watching in SideBar. changed SimType, newSimType: ", newSimType);
+  //console.log("watching in SideBar. changed SimType, newSimType: ", newSimType);
+  emitSimType("selectedSimType", newSimType);
 });
 
 const selectSimType = (event) => {
-  console.log("button event:", event);
-  console.log("name:", event.target.name);
+  //console.log("button event:", event);
+  //console.log("name:", event.target.name);
   switch (event.target.name) {
     case "statik":
       simType.value = "statik";
@@ -58,9 +57,6 @@ const selectSimType = (event) => {
           Sensörlü Kontrol
         </button>
       </div>
-    </div>
-    <div style="font-size: 1rem">
-      This is SideBar... Selected simType = {{ simType }}
     </div>
   </div>
 </template>

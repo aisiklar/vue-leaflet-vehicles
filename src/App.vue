@@ -19,10 +19,12 @@ const qtyVehiclePoints = ref(0);
 const vehiclePoints = ref([]);
 const data = ref(dataTraci);
 const zoom = ref(17);
-const receivedSimType = ref("statik");
+const receivedSimType = ref("sensor");
+const timer = ref("");
 
 //logging
-console.log("receivedSimType: ", receivedSimType.value);
+//console.log("receivedSimType: ", receivedSimType.value);
+//console.log("timer at the beginning: ", timer.value);
 
 /* console.log(
   "data",
@@ -46,16 +48,26 @@ for (let index = 0; index < 3; index++) {
   }
 } */
 
+/* 
 watch(receivedSimType, (newReceivedSimType) => {
-  console.log("newReceivedSimType: ", newReceivedSimType);
-});
+  console.log("watching, newReceivedSimType: ", newReceivedSimType);
+}); 
+*/
 
+/* 
 watch(data, (newData) => {
-  console.log("sourceData: ", newData.value);
+  console.log("sourceData: ", newData);
+}); 
+*/
+
+/* 
+watch(timer, (newTimer) => {
+  console.log("watching, newTimer: ", newTimer);
 });
+ */
 
 const newCircleRadius = computed(() => {
-  console.log("zoom: ", parseInt(zoom.value, 10));
+  //console.log("zoom: ", parseInt(zoom.value, 10));
   return parseInt(zoom.value, 10) <= 11
     ? 50
     : parseInt(zoom.value, 10) <= 14
@@ -63,11 +75,19 @@ const newCircleRadius = computed(() => {
     : 5;
 });
 
-console.log("data length: ", data.value.length);
+//console.log("data length: ", data.value.length);
 
 // stop with :clearTimeout(incrementTime);
 
-const incrementTime = setInterval(getDataByTime, 5000);
+function startTimer() {
+  if (timer.value !== "") {
+    //console.log("in startTimer, in clearInterval");
+    clearInterval(timer.value);
+  }
+  timer.value = setInterval(getDataByTime, 1000);
+}
+
+startTimer();
 
 let index = 0;
 /* function getDataByTime() {
@@ -75,15 +95,15 @@ let index = 0;
   index += 5;
   if (index >= 15) {
     console.log("index = data.length, stop timing");
-    clearTimeout(incrementTime);
+    clearInterval(incrementTime);
   }
 } */
 
 function getDataByTime() {
   //console.log("in getDataByTime func.");
   //console.log("index: ", index);
-  console.log(`time: ${data.value[index].time}`);
-  console.log(`vehicles length: ${data.value[index].vehicles.length}`);
+  //console.log(`time: ${data.value[index].time}`);
+  //console.log(`vehicles length: ${data.value[index].vehicles.length}`);
   qtyVehiclePoints.value = data.value[index].vehicles.length;
   //console.log("qtyVehiclePoints: ", qtyVehiclePoints.value);
   vehiclePoints.value = data.value[index].vehicles;
@@ -98,7 +118,7 @@ function getDataByTime() {
   index++;
   if (index == data.value.length) {
     //console.log("index = data.length, stop timing");
-    clearTimeout(incrementTime);
+    clearInterval(timer.value);
   }
 }
 
@@ -106,20 +126,25 @@ const receiveSimType = (input) => {
   receivedSimType.value = input;
   switch (receivedSimType.value) {
     case "statik":
-      console.log("receivedSimType: ", receivedSimType.value);
+      //console.log("receivedSimType: ", receivedSimType.value);
       data.value = dataStatic;
-      console.log("data: ", data.value);
+      //console.log("data: ", data.value);
+      index = 0;
+      startTimer();
       break;
     case "adaptif":
-      console.log("receivedSimType: ", receivedSimType.value);
+      //console.log("receivedSimType: ", receivedSimType.value);
       data.value = dataAdaptive;
-      console.log("data: ", data.value);
-
+      //console.log("data: ", data.value);
+      index = 0;
+      startTimer();
       break;
     case "sensor":
-      console.log("receivedSimType: ", receivedSimType.value);
+      //console.log("receivedSimType: ", receivedSimType.value);
       data.value = dataTraci;
-      console.log("data: ", data.value);
+      //console.log("data: ", data.value);
+      index = 0;
+      startTimer();
       break;
   }
 };
@@ -131,7 +156,6 @@ const receiveSimType = (input) => {
   <div class="body-container">
     <div class="side-bar-container">
       <SideBar @selectedSimType="receiveSimType"></SideBar>
-      <div>simType written in parent: {{ receivedSimType }}</div>
     </div>
     <div class="main-body-container">
       <div class="map-container">
