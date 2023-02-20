@@ -6,8 +6,8 @@ import { ref, watch, computed } from "vue";
 import { LMap, LTileLayer, LCircle } from "@vue-leaflet/vue-leaflet";
 //import data from "../../../sumo-simulator/sumo-exercises/samsun-sinopYolu_Demo2/data-default";
 import dataTraci from "./assets/data/dataTraci";
-//import dataStatic from "./assets/data/dataStatic";
-//import dataAdaptive from "./assets/data/dataAdaptive";
+import dataStatic from "./assets/data/dataStatic";
+import dataAdaptive from "./assets/data/dataAdaptive";
 import SideBar from "./components/SideBar.vue";
 
 //reactive
