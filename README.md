@@ -1,35 +1,9 @@
 # vue-leaflet-vehicles
 
-This template should help get you started developing with Vue 3 in Vite.
+## Project Description
+This Project gets time, vehicle id and vehicle position data from files and respectively displays it on map (leaflet.js) according to the choice from the user (The user clicks any of the three button which triggers the related data-importing from the related file).
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## tech stack
+* vue.js
+* leaflet.js
+* Javascript, HTML, CSS
